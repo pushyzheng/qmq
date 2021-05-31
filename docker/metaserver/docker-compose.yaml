@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  qmq-metaserver:
+    container_name: qmq-metaserver
+    tty: true
+    stdin_open: true
+    depends_on:
+      - server-db
+    image: qunar.com/qmq-metaserver:0.0.1
+    ports:
+      - "8080:8080"
+    links:
+      - server-db
+
+  server-db:
+    platform: linux/x86_64
+    image: mysql:5.7
+    container_name: server-db
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: qmq
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
