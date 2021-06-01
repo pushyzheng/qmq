@@ -7,7 +7,10 @@ RUN apk add --no-cache bash
 COPY bin /usr/src/qmq/bin
 COPY conf /usr/src/qmq/conf
 COPY lib /usr/src/qmq/lib
+COPY scripts /usr/src/qmq/scripts
 
 WORKDIR /usr/src/qmq
 
-CMD ["./bin/metaserver.sh", "start-foreground"]
+RUN ["chmod", "+x", "/usr/src/qmq/scripts/start-broker.sh"]
+
+CMD ["./scripts/start-broker.sh"]

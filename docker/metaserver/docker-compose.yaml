@@ -6,17 +6,17 @@ services:
     tty: true
     stdin_open: true
     depends_on:
-      - server-db
-    image: qunar.com/qmq-metaserver:0.0.1
+      - qmq-metaserver-db
+    image: qunar/qmq-metaserver:0.0.1
     ports:
       - "8080:8080"
     links:
-      - server-db
+      - qmq-metaserver-db
 
-  server-db:
+  qmq-metaserver-db:
     platform: linux/x86_64
     image: mysql:5.7
-    container_name: server-db
+    container_name: qmq-metaserver-db
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: 123456
@@ -25,3 +25,11 @@ services:
       - "13306:3306"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d
+    volumes_from:
+      - apollo-dbdata
+
+  qmq-metaserver-dbdata:
+    image: alpine:latest
+    container_name: qmq-metaserver-dbdata
+    volumes:
+      - /var/lib/mysql

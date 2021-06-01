@@ -1,0 +1,22 @@
+version: "3.3"
+
+services:
+  qmq-broker:
+    container_name: qmq-broker
+    hostname: qmq-broker
+    tty: true
+    stdin_open: true
+    image: qunar/qmq-broker:0.0.1
+    environment:
+      META_SERVER_ADDRESS: qmq-metaserver:8080
+      BROKEN_GROUP_NAME: demo
+    ports:
+      - "20881:20881"
+      - "20882:20882"
+    networks:
+      - qmq-server
+
+networks:
+  qmq-server:
+    external: true
+    name: metaserver_default
